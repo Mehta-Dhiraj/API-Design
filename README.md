@@ -61,19 +61,14 @@ mvn -DskipTests install
 
 ## 4. Run the service
 
-Run from inside `WeatherApiService/`, because the IP2Location database is loaded from the relative path
-`ip2locdb/IP2LOCATION-LITE-DB3.BIN`.
+Run from the **repo root**. The IP2Location database path is set in `application.properties`
+(`ip2location.db-path=WeatherApiService/ip2locdb/IP2LOCATION-LITE-DB3.BIN`) and is relative to the working directory.
 
 ```bash
-cd WeatherApiService
-java -jar target/WeatherApiService-1.0.0.jar
+java -jar WeatherApiService/target/WeatherApiService-1.0.0.jar
 ```
 
-or: `mvn spring-boot:run` from inside `WeatherApiService/`. The API listens on <http://localhost:8080>.
-
-The IP2Location path is configurable with `ip2location.db-path` (default `ip2locdb/IP2LOCATION-LITE-DB3.BIN`). If the
-file is not found at that path the app also tries `WeatherApiService/<path>`, so starting from the repo root works
-too. In an IDE run configuration, set the working directory to `WeatherApiService` (or the repo root).
+The API listens on <http://localhost:8080>. In an IDE run configuration, set the working directory to the repo root.
 
 ## 5. Try the APIs
 
@@ -115,6 +110,6 @@ The `*ControllerTest(s)` tests use mocks and need no database.
 
 - `password authentication failed`: re-check the role/password from step 2.
 - `Connection refused` on 5432: the Postgres container is not running (`podman ps`).
-- `FileNotFoundException: ip2locdb/IP2LOCATION-LITE-DB3.BIN`: the app was started from a different folder; use the
-  working directory above or set `ip2location.db-path` to the absolute path of the `.BIN` file.
+- `FileNotFoundException: ip2locdb/IP2LOCATION-LITE-DB3.BIN`: the app was not started from the repo root; fix the
+  working directory or set `ip2location.db-path` to the absolute path of the `.BIN` file.
 - Port 8080 already in use: stop the other process, or run with `--server.port=8081`.
