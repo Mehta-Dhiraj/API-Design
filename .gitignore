@@ -39,5 +39,6 @@ build/
 .DS_Store
 ### Local IDE / logs ###
 .idea/vcs.xml
+.idea/dataSources.xml
 .idea/workspace.xml
 *.log
