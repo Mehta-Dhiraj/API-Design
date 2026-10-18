@@ -35,12 +35,11 @@ public class GeolocationService {
 
             logger.info(result.toString());
 
-            return new Location(result.getCity(), result.getRegion(), result.getCountryShort(), result.getCountryShort());
+            return new Location(result.getCity(), result.getRegion(), result.getCountryLong(), result.getCountryShort());
 
         } catch (IOException e) {
             throw new GeolocationException("Error Querying IP database", e);
         }
     }
-
 
 }

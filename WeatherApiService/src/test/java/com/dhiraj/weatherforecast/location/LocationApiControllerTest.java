@@ -127,7 +127,6 @@ class LocationApiControllerTest {
                 .andExpect(jsonPath("$.city_name").value("New York City"))
                 .andDo(print());
 
-
     }
 
     @Test
@@ -143,7 +142,6 @@ class LocationApiControllerTest {
                 .andExpect(jsonPath("$.errors[0]").value("Location code cannot be null"))
                 .andDo(print());
 
-
     }
 
     @Test
@@ -157,7 +155,6 @@ class LocationApiControllerTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$.errors[0]").value("Location code must have 3-12 characters"))
                 .andDo(print());
-
 
     }
 
@@ -173,7 +170,6 @@ class LocationApiControllerTest {
                 .andExpect(content().contentType("application/json"))
 //                .andExpect(jsonPath("$.errors[0]").value("Location code must have 3-12 characters"))
                 .andDo(print());
-
 
     }
 
@@ -220,7 +216,6 @@ class LocationApiControllerTest {
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }
-
 
     public Location buildLocation(String code) {
         Location location = new Location();

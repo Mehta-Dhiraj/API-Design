@@ -1,6 +1,7 @@
 package com.dhiraj.weatherforecast;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,37 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return errorDTO;
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDTO handleBadRequestException(HttpServletRequest request, Exception ex) {
+        ErrorDTO error = new ErrorDTO();
+        error.setTimestamp(new Date());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.addError(ex.getMessage());
+        error.setPath(request.getServletPath());
+
+        logger.error(ex.getMessage(), ex);
+        return error;
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDTO handleConstraintViolationException(HttpServletRequest request, Exception ex) {
+        ErrorDTO error = new ErrorDTO();
+        ConstraintViolationException violationException = (ConstraintViolationException) ex;
+
+        error.setTimestamp(new Date());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setPath(request.getServletPath());
+
+        violationException.getConstraintViolations()
+                .forEach(constraint -> error.addError(constraint.getPropertyPath() + ": " + constraint.getMessage()));
+
+        logger.error(ex.getMessage(), ex);
+        return error;
+    }
 
     @Override
     protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
