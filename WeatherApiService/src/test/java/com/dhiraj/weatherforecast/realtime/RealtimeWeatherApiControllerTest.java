@@ -120,7 +120,6 @@ public class RealtimeWeatherApiControllerTest {
         realtimeWeather.setLocation(location);
         location.setRealtimeWeather(realtimeWeather);
 
-
         Mockito.when(realtimeWeatherService.getByLocationCode(locationCode)).thenReturn(realtimeWeather);
 
         String expectedLocation = location.getCityName() + ", " + location.getRegionName() + ", " + location.getCountryName();

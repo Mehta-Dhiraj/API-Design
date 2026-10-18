@@ -25,7 +25,6 @@ public class RealtimeWeatherRepositoryTests {
 
         String locationCode = "NYC_USA";
 
-
         RealtimeWeather realtimeWeather = repo.findById(locationCode).get();
 
         realtimeWeather.setTemperature(-2);
@@ -38,7 +37,6 @@ public class RealtimeWeatherRepositoryTests {
         RealtimeWeather updatedRealTimeWeather = repo.save(realtimeWeather);
 
         assertThat(updatedRealTimeWeather.getHumidity()).isEqualTo(32);
-
 
     }
 
