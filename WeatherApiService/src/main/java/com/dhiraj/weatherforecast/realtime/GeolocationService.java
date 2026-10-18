@@ -5,6 +5,7 @@ import com.ip2location.IP2Location;
 import com.ip2location.IPResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,10 +17,9 @@ public class GeolocationService {
 
     private final IP2Location ipLocator = new IP2Location();
 
-    public GeolocationService() {
+    public GeolocationService(@Value("${ip2location.db-path}") String dbPath) {
         try {
-            String DBPath = "ip2locdb/IP2LOCATION-LITE-DB3.BIN";
-            ipLocator.Open(DBPath);
+            ipLocator.Open(dbPath);
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
