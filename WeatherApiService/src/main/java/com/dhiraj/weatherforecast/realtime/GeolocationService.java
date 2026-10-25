@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class GeolocationService {
@@ -19,7 +20,10 @@ public class GeolocationService {
 
     public GeolocationService(@Value("${ip2location.db-path}") String dbPath) {
         try {
-            ipLocator.Open(dbPath);
+            InputStream inputStream = getClass().getResourceAsStream(dbPath);
+            byte[] data = inputStream.readAllBytes();
+            ipLocator.Open(data);
+            inputStream.close();
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
