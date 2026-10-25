@@ -1,5 +1,6 @@
 package com.dhiraj.weatherapicommon;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -22,6 +23,7 @@ public class HourlyWeatherId implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "location_code")
+    @JsonIgnore
     private Location location;
 
     @Override

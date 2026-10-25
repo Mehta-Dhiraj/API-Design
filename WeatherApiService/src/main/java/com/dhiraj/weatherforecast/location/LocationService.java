@@ -23,16 +23,18 @@ public class LocationService {
         return locationRepository.findUnTrashed();
     }
 
-    public Location get(String code) {
-        return locationRepository.findByCode(code);
+    public Location get(String code) throws LocationNotFoundException {
+        Location location = locationRepository.findByCode(code);
+        if (location == null) {
+            throw new LocationNotFoundException(code);
+        }
+
+        return location;
     }
 
     public Location update(Location locationRequest) throws LocationNotFoundException {
         String code = locationRequest.getCode();
-        Location locationInDB = locationRepository.findByCode(code);
-        if (locationInDB == null) {
-            throw new LocationNotFoundException("No location found with the code: " + code);
-        }
+        Location locationInDB = get(code);
 
         locationInDB.setCityName(locationRequest.getCityName());
         locationInDB.setRegionName(locationRequest.getRegionName());
@@ -46,11 +48,7 @@ public class LocationService {
 
     @Transactional
     public void delete(String code) throws LocationNotFoundException {
-        Location locationCode = locationRepository.findByCode(code);
-
-        if (locationCode == null) {
-            throw new LocationNotFoundException("No location found with the code: " + code);
-        }
+        get(code);
         locationRepository.trashByCode(code);
     }
 }

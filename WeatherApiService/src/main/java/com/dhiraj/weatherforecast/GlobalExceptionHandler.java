@@ -1,5 +1,6 @@
 package com.dhiraj.weatherforecast;
 
+import com.dhiraj.weatherforecast.location.LocationNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.jspecify.annotations.Nullable;
@@ -48,6 +49,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDTO error = new ErrorDTO();
         error.setTimestamp(new Date());
         error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.addError(ex.getMessage());
+        error.setPath(request.getServletPath());
+
+        logger.error(ex.getMessage(), ex);
+        return error;
+    }
+
+    @ExceptionHandler(LocationNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorDTO handleLocationNotFoundException(HttpServletRequest request, Exception ex) {
+        ErrorDTO error = new ErrorDTO();
+        error.setTimestamp(new Date());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
         error.addError(ex.getMessage());
         error.setPath(request.getServletPath());
 

@@ -1,5 +1,6 @@
 package com.dhiraj.weatherapicommon;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -77,6 +78,7 @@ public class HourlyWeather {
         return Objects.hash(id);
     }
 
+    @JsonIgnore
     public HourlyWeather getShallowCopy() {
         HourlyWeather copy = new HourlyWeather();
         copy.setId(this.getId());

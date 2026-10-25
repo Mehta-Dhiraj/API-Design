@@ -32,7 +32,7 @@ class LocationApiControllerTest {
     @Test
     public void testShouldReturn400BadRequest() throws Exception {
 
-        Location location = new Location();
+        LocationDTO location = new LocationDTO();
         String content = objectMapper.writeValueAsString(location);
 
         mockMvc.perform(post(END_POINT_PATH)
@@ -49,7 +49,7 @@ class LocationApiControllerTest {
 
         Mockito.when(locationService.save(location)).thenReturn(location);
 
-        String content = objectMapper.writeValueAsString(location);
+        String content = objectMapper.writeValueAsString(entity2DTO(location));
 
         mockMvc.perform(post(END_POINT_PATH)
                         .contentType("application/json")
@@ -107,6 +107,8 @@ class LocationApiControllerTest {
 
     @Test
     public void testGetShouldReturn400NotFound() throws Exception {
+        Mockito.when(locationService.get("ABCDE")).thenThrow(new LocationNotFoundException("ABCDE"));
+
         mockMvc.perform(get(buildUrl("ABCDE")))
                 .andExpect(status().isNotFound())
                 .andDo(print());
@@ -115,7 +117,7 @@ class LocationApiControllerTest {
     @Test
     public void testUpdateShouldReturn200OK() throws Exception {
         Location location = buildLocation("NYC_USA");
-        String bodyContent = objectMapper.writeValueAsString(location);
+        String bodyContent = objectMapper.writeValueAsString(entity2DTO(location));
 
         Mockito.when(locationService.update(location)).thenReturn(location);
 
@@ -131,7 +133,7 @@ class LocationApiControllerTest {
 
     @Test
     public void testValidateRequestBodyLocationCodeNotNull() throws Exception {
-        Location location = buildLocation("NYC_USA");
+        LocationDTO location = entity2DTO(buildLocation("NYC_USA"));
         location.setCode(null);
         String bodyContent = objectMapper.writeValueAsString(location);
 
@@ -146,7 +148,7 @@ class LocationApiControllerTest {
 
     @Test
     public void testValidateRequestBodyLocationCodeLength() throws Exception {
-        Location location = buildLocation("");
+        LocationDTO location = entity2DTO(buildLocation(""));
         String bodyContent = objectMapper.writeValueAsString(location);
 
         mockMvc.perform(put(END_POINT_PATH).contentType("application/json")
@@ -160,7 +162,7 @@ class LocationApiControllerTest {
 
     @Test
     public void testValidateRequestBodyAllFieldsInvalid() throws Exception {
-        Location location = new Location();
+        LocationDTO location = new LocationDTO();
         location.setCityName("");
         String bodyContent = objectMapper.writeValueAsString(location);
 
@@ -175,11 +177,11 @@ class LocationApiControllerTest {
 
     @Test
     public void testUpdateShouldReturn404NotFound() throws Exception {
-        Location location = buildLocation("ABCD");
+        LocationDTO location = entity2DTO(buildLocation("ABCDEF"));
 
         String content = objectMapper.writeValueAsString(location);
 
-        Mockito.when(locationService.update(location)).thenThrow(new LocationNotFoundException("No location found"));
+        Mockito.when(locationService.update(Mockito.any())).thenThrow(new LocationNotFoundException("No location found"));
         mockMvc.perform(put(END_POINT_PATH).contentType("application/json")
                         .content(content))
                 .andExpect(status().isNotFound())
@@ -188,11 +190,9 @@ class LocationApiControllerTest {
 
     @Test
     public void testUpdateShouldReturn400BadRequest() throws Exception {
-        Location location = buildLocation("ABCD");
+        LocationDTO location = entity2DTO(buildLocation("ABCD"));
         location.setCode(null);
         String content = objectMapper.writeValueAsString(location);
-
-        Mockito.when(locationService.update(location)).thenReturn(location);
         mockMvc.perform(put(END_POINT_PATH).contentType("application/json")
                         .content(content))
                 .andExpect(status().isBadRequest())
@@ -226,6 +226,17 @@ class LocationApiControllerTest {
         location.setRegionName("New York");
         location.setEnabled(true);
         return location;
+    }
+
+    private LocationDTO entity2DTO(Location location) {
+        LocationDTO dto = new LocationDTO();
+        dto.setCode(location.getCode());
+        dto.setCityName(location.getCityName());
+        dto.setRegionName(location.getRegionName());
+        dto.setCountryCode(location.getCountryCode());
+        dto.setCountryName(location.getCountryName());
+        dto.setEnabled(location.isEnabled());
+        return dto;
     }
 
     public String buildUrl(String code) {
