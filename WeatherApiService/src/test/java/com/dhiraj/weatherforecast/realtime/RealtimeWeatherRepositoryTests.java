@@ -1,7 +1,6 @@
 package com.dhiraj.weatherforecast.realtime;
 
 import com.dhiraj.weatherapicommon.RealtimeWeather;
-import jakarta.validation.constraints.AssertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;

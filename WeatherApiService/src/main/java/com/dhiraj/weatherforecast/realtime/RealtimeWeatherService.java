@@ -26,25 +26,25 @@ public class RealtimeWeatherService {
         RealtimeWeather realtimeWeather = weatherRepository.findByCountryCodeAndCity(countryCode, cityName);
 
         if (realtimeWeather == null) {
-            throw new LocationNotFoundException("No Location found with given country code and city name");
+            throw new LocationNotFoundException(countryCode, cityName);
         }
         return realtimeWeather;
     }
 
-    public RealtimeWeather getByLocationCode(String locationCode) throws LocationNotFoundException {
+    public RealtimeWeather getByLocationCode(String locationCode) {
         RealtimeWeather realtimeWeather = weatherRepository.findByLocationCode(locationCode);
 
         if (realtimeWeather == null) {
-            throw new LocationNotFoundException("No Location found with given location code: " + locationCode);
+            throw new LocationNotFoundException(locationCode);
         }
         return realtimeWeather;
     }
 
-    public RealtimeWeather update(String locationCode, RealtimeWeather realtimeWeather) throws LocationNotFoundException {
+    public RealtimeWeather update(String locationCode, RealtimeWeather realtimeWeather) {
         Location location = locationRepository.findByCode(locationCode);
 
         if (location == null) {
-            throw new LocationNotFoundException("No Location found with given location code: " + locationCode);
+            throw new LocationNotFoundException(locationCode);
         }
 
         realtimeWeather.setLocation(location);
