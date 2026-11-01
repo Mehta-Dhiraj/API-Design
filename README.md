@@ -7,6 +7,9 @@ Multi-module Maven project (Spring Boot 4.1, Java 17, PostgreSQL).
 | `WeatherApiCommon` | Shared JPA entities (`Location`, `RealtimeWeather`, `HourlyWeather`, `HourlyWeatherId`) |
 | `WeatherApiService` | REST APIs: locations, realtime weather, hourly forecast |
 
+Client examples that consume these APIs with `RestTemplate` (plain Java clients and a Spring MVC demo page) live in a
+separate repository: [SprintRestClient](https://github.com/Mehta-Dhiraj/SprintRestClient).
+
 ## Prerequisites
 
 - Java 17 (check `.java-version`). Point `JAVA_HOME` at the intended JDK's explicit home path, e.g.
