@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -25,4 +26,22 @@ public class DailyWeatherId implements Serializable {
     @JoinColumn(name = "location_code")
     @JsonIgnore
     private Location location;
+
+    @Override
+    public String toString() {
+        return "DailyWeatherId [dayOfMonth=" + dayOfMonth + ", month=" + month + ", location=" + location + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DailyWeatherId that = (DailyWeatherId) o;
+        return dayOfMonth == that.dayOfMonth && month == that.month && Objects.equals(location, that.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dayOfMonth, month, location);
+    }
 }

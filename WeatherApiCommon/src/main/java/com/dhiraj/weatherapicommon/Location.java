@@ -48,7 +48,7 @@ public class Location {
     @OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HourlyWeather> hourlyWeatherList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DailyWeather> listDailyWeather = new ArrayList<>();
 
     public Location(String cityName, String regionName, String countryName, String countryCode) {
